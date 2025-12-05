@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36623.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.Api", "ApiKnowledgePortal.Api\ApiKnowledgePortal.Api.csproj", "{3EA3C9BB-B531-4E11-83BA-5B77D81DC4A5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{18B124D5-928C-4CEA-8964-5D89A5E2F160} = {18B124D5-928C-4CEA-8964-5D89A5E2F160}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.Application", "ApiKnowledgePortal.Application\ApiKnowledgePortal.Application.csproj", "{F7629071-8468-4ABA-A99C-3A8A709D0823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.Domain", "ApiKnowledgePortal.Domain\ApiKnowledgePortal.Domain.csproj", "{C01139DC-D6F1-4C6B-A207-F05D9AF1545C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.Infrastructure", "ApiKnowledgePortal.Infrastructure\ApiKnowledgePortal.Infrastructure.csproj", "{18B124D5-928C-4CEA-8964-5D89A5E2F160}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.WebUI", "ApiKnowledgePortal.WebUI\ApiKnowledgePortal.WebUI\ApiKnowledgePortal.WebUI.csproj", "{DC7B59FE-84CD-465A-B1C0-0E1A2EE6DB75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.WebUI.Client", "ApiKnowledgePortal.WebUI\ApiKnowledgePortal.WebUI.Client\ApiKnowledgePortal.WebUI.Client.csproj", "{35492A9D-D30C-42FE-A2B3-7E14CA0FEBEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.SyncWorker", "ApiKnowledgePortal.SyncWorker\ApiKnowledgePortal.SyncWorker.csproj", "{15651E99-E6B2-4D46-A312-B711E13B91FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3EA3C9BB-B531-4E11-83BA-5B77D81DC4A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA3C9BB-B531-4E11-83BA-5B77D81DC4A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA3C9BB-B531-4E11-83BA-5B77D81DC4A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA3C9BB-B531-4E11-83BA-5B77D81DC4A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7629071-8468-4ABA-A99C-3A8A709D0823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7629071-8468-4ABA-A99C-3A8A709D0823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7629071-8468-4ABA-A99C-3A8A709D0823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7629071-8468-4ABA-A99C-3A8A709D0823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C01139DC-D6F1-4C6B-A207-F05D9AF1545C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C01139DC-D6F1-4C6B-A207-F05D9AF1545C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C01139DC-D6F1-4C6B-A207-F05D9AF1545C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C01139DC-D6F1-4C6B-A207-F05D9AF1545C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18B124D5-928C-4CEA-8964-5D89A5E2F160}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18B124D5-928C-4CEA-8964-5D89A5E2F160}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18B124D5-928C-4CEA-8964-5D89A5E2F160}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18B124D5-928C-4CEA-8964-5D89A5E2F160}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC7B59FE-84CD-465A-B1C0-0E1A2EE6DB75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC7B59FE-84CD-465A-B1C0-0E1A2EE6DB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC7B59FE-84CD-465A-B1C0-0E1A2EE6DB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC7B59FE-84CD-465A-B1C0-0E1A2EE6DB75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35492A9D-D30C-42FE-A2B3-7E14CA0FEBEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35492A9D-D30C-42FE-A2B3-7E14CA0FEBEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35492A9D-D30C-42FE-A2B3-7E14CA0FEBEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35492A9D-D30C-42FE-A2B3-7E14CA0FEBEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15651E99-E6B2-4D46-A312-B711E13B91FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15651E99-E6B2-4D46-A312-B711E13B91FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15651E99-E6B2-4D46-A312-B711E13B91FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15651E99-E6B2-4D46-A312-B711E13B91FB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C73DC357-0EDD-4910-849D-5094E381D67E}
+	EndGlobalSection
+EndGlobal
