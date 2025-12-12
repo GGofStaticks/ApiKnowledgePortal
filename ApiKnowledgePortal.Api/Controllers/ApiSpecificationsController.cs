@@ -1,6 +1,7 @@
 ﻿using ApiKnowledgePortal.Application.ApiSpec.Commands;
 using ApiKnowledgePortal.Application.ApiSpec.Dtos;
 using ApiKnowledgePortal.Application.ApiSpec.Queries;
+using ApiKnowledgePortal.Application.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,12 @@ namespace ApiKnowledgePortal.Api.Controllers
         public ApiSpecificationsController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet("paged")]
+        public async Task<PagedResult<ApiSpecDto>> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            return await _mediator.Send(new GetApiSpecPagedQuery(page, pageSize));
         }
 
         [HttpGet]

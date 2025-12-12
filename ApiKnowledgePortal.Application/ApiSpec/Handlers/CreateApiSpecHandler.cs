@@ -29,7 +29,7 @@ namespace ApiKnowledgePortal.Application.ApiSpec.Handlers
         public async Task<ApiSpecDto> Handle(CreateApiSpecCommand request, CancellationToken cancellationToken)
         {
             var id = ApiSpecId.NewId();
-            var spec = new ApiSpecifications(id, request.Name, request.Version, request.Content);
+            var spec = new ApiSpecifications(id, request.SwaggerSourceId, request.Name, request.Version, request.Content);
 
             await _repository.AddAsync(spec, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

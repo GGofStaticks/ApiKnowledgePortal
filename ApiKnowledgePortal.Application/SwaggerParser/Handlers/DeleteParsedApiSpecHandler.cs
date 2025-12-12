@@ -25,7 +25,7 @@ namespace ApiKnowledgePortal.Application.SwaggerParser.Handlers
             var entity = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
             if (entity is null)
-                throw new KeyNotFoundException("спрашенная апи спецификация не найдена");
+                throw new KeyNotFoundException("спаршенная апи спецификация не найдена");
 
             await _repository.DeleteAsync(entity);
 

@@ -49,5 +49,7 @@ namespace ApiKnowledgePortal.Infrastructure.Repositories
             _dbContext.ApiSpecs.Update(apiSpec);
             await Task.CompletedTask;
         }
+
+        public IQueryable<ApiSpecifications> Query() => _dbContext.ApiSpecs.AsQueryable();
     }
 }

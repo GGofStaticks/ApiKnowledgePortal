@@ -9,6 +9,7 @@ namespace ApiKnowledgePortal.Application.ApiSpec.Dtos
     public class ApiSpecDto
     {
         public Guid Id { get; set; }
+        public Guid SwaggerSourceId { get; set; }
         public string Name { get; set; } = default!;
         public string Version { get; set; } = default!;
         public string Content { get; set; } = default!;

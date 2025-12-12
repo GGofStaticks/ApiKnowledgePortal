@@ -38,6 +38,14 @@ namespace ApiKnowledgePortal.Infrastructure.Persistence
                           id => id.Value,
                           value => new ApiSpecId(value));
 
+                entity.Property(e => e.SwaggerSourceId).IsRequired(false);
+
+                entity.HasOne<SwaggerSource>()
+                      .WithMany()
+                      .HasForeignKey(e => e.SwaggerSourceId)
+                      .OnDelete(DeleteBehavior.SetNull) 
+                      .IsRequired(false);
+
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
                 entity.Property(e => e.Version).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Content).IsRequired().HasColumnType("jsonb"); ;

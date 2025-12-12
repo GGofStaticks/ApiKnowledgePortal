@@ -3,6 +3,7 @@ using System;
 using ApiKnowledgePortal.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiKnowledgePortal.Infrastructure.Migrations
 {
     [DbContext(typeof(ApiKnowledgePortalDbContext))]
-    partial class ApiKnowledgePortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251211150720_4try")]
+    partial class _4try
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,7 @@ namespace ApiKnowledgePortal.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<Guid?>("SwaggerSourceId")
+                    b.Property<Guid>("SwaggerSourceId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Version")
@@ -120,7 +123,8 @@ namespace ApiKnowledgePortal.Infrastructure.Migrations
                     b.HasOne("ApiKnowledgePortal.Domain.SwaggerSources.SwaggerSource", null)
                         .WithMany()
                         .HasForeignKey("SwaggerSourceId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

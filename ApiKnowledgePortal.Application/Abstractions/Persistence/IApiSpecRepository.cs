@@ -15,5 +15,6 @@ namespace ApiKnowledgePortal.Application.Abstractions.Persistence
         Task AddAsync(ApiSpecifications apiSpec, CancellationToken cancellationToken = default);
         Task UpdateAsync(ApiSpecifications apiSpec, CancellationToken cancellationToken = default);
         Task DeleteAsync(ApiSpecId id, CancellationToken cancellationToken = default);
+        IQueryable<ApiSpecifications> Query();
     }
 }

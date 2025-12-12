@@ -1,0 +1,147 @@
+﻿@page "/"
+@using ApiKnowledgePortal.Application.Common
+@using ApiKnowledgePortal.Application.SwaggerSources.Dtos
+@using ApiKnowledgePortal.Application.ApiSpec.Dtos
+@using ApiKnowledgePortal.Application.SwaggerParser.Dtos
+@using WebUI.Services
+@inject ApiClient ApiClient
+
+<PageTitle>Главная - API Knowledge Portal</PageTitle>
+
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="display-4 fw-bold text-gradient">
+            API Knowledge Portal
+        </h1>
+        <p class="lead mt-4 mb-5">
+            Это очень крутой портал знаний по самому крутому набору Swagger-спецификаций
+        </p>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">@sourcesCount</div>
+                <div class="stat-label">Swagger Sources</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">@apiSpecsCount</div>
+                <div class="stat-label">API Specifications</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">@parsedEndpointsCount</div>
+                <div class="stat-label">Parsed Endpoints</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #1a1f2e !important;
+        color: #e0e0e0;
+    }
+
+    .hero-section {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        color: white;
+    }
+
+    .hero-content {
+        text-align: center;
+        max-width: 900px;
+    }
+
+    .text-gradient {
+        background: linear-gradient(90deg, #fff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .lead {
+        font-size: 1.4rem;
+        opacity: 0.95;
+        font-weight: 300;
+    }
+
+    .stats-grid {
+        display: flex;
+        justify-content: center;
+        gap: 4rem;
+        margin: 5rem 0;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(12px);
+        border-radius: 20px;
+        padding: 2.5rem 2rem;
+        min-width: 180px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+
+        .stat-card:hover {
+            transform: translateY(-12px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+    .stat-number {
+        font-size: 4rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 500;
+    }
+
+    @@media (max-width: 768px) {
+        .stats-grid {
+            gap: 2rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+        }
+
+        .stat-card {
+            padding: 2rem 1.5rem;
+        }
+    }
+</style>
+
+@code {
+    private int sourcesCount = 0;
+    private int apiSpecsCount = 0;
+    private int parsedEndpointsCount = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var sources = await ApiClient.GetSwaggerSourcesPagedAsync(1, 1);
+            sourcesCount = sources?.TotalCount ?? 0;
+
+            var specs = await ApiClient.GetApiSpecificationsPagedAsync(1, 1);
+            apiSpecsCount = specs?.TotalCount ?? 0;
+
+            var parsed = await ApiClient.GetParsedApiSpecsPagedAsync(1, 1);
+            parsedEndpointsCount = parsed?.TotalCount ?? 0;
+        }
+        catch
+        {
+            sourcesCount = apiSpecsCount = parsedEndpointsCount = 0;
+        }
+    }
+}

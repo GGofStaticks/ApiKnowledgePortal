@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ApiKnowledgePortal.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-// этот класс нужен, чтобы миграции не падали из за сборку диая
+// этот класс нужен, чтобы миграции не падали из за сборки диая
 namespace ApiKnowledgePortal.Infrastructure
 {
     public class ApiKnowledgePortalDbContextFactory : IDesignTimeDbContextFactory<ApiKnowledgePortalDbContext>

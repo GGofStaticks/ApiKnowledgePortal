@@ -55,5 +55,6 @@ namespace ApiKnowledgePortal.Infrastructure.Repositories
             _dbContext.SwaggerSources.Update(source);
             await Task.CompletedTask;
         }
+        public IQueryable<SwaggerSource> Query() => _dbContext.SwaggerSources.AsQueryable();
     }
 }

@@ -15,7 +15,7 @@ namespace ApiKnowledgePortal.Domain.SwaggerSources
         public DateTime? LastFetchTime { get; private set; }
         public string? LastFetchStatus { get; private set; }
 
-        // Конструктор для EF / создание
+        // конструктор для ef
         private SwaggerSource() { }
 
         public SwaggerSource(Guid id, string name, string url)

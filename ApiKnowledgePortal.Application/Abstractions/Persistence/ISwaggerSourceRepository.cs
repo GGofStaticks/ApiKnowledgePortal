@@ -15,5 +15,6 @@ namespace ApiKnowledgePortal.Application.Abstractions.Persistence
         Task AddAsync(SwaggerSource source, CancellationToken cancellationToken = default);
         Task UpdateAsync(SwaggerSource source, CancellationToken cancellationToken = default);
         Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+        IQueryable<SwaggerSource> Query();
     }
 }

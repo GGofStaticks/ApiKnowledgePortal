@@ -8,5 +8,5 @@ using MediatR;
 
 namespace ApiKnowledgePortal.Application.ApiSpec.Commands
 {
-    public record CreateApiSpecCommand(string Name, string Version, string Content) : IRequest<ApiSpecDto>;
+    public record CreateApiSpecCommand(Guid SwaggerSourceId, string Name, string Version, string Content) : IRequest<ApiSpecDto>;
 }

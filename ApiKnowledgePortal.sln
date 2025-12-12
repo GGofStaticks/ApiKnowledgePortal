@@ -14,11 +14,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.Domain",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.Infrastructure", "ApiKnowledgePortal.Infrastructure\ApiKnowledgePortal.Infrastructure.csproj", "{18B124D5-928C-4CEA-8964-5D89A5E2F160}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.WebUI", "ApiKnowledgePortal.WebUI\ApiKnowledgePortal.WebUI\ApiKnowledgePortal.WebUI.csproj", "{DC7B59FE-84CD-465A-B1C0-0E1A2EE6DB75}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.WebUI.Client", "ApiKnowledgePortal.WebUI\ApiKnowledgePortal.WebUI.Client\ApiKnowledgePortal.WebUI.Client.csproj", "{35492A9D-D30C-42FE-A2B3-7E14CA0FEBEE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKnowledgePortal.SyncWorker", "ApiKnowledgePortal.SyncWorker\ApiKnowledgePortal.SyncWorker.csproj", "{15651E99-E6B2-4D46-A312-B711E13B91FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUI", "WebUI\WebUI.csproj", "{279429A2-9E06-4869-9C0B-699E92F78821}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F7629071-8468-4ABA-A99C-3A8A709D0823} = {F7629071-8468-4ABA-A99C-3A8A709D0823}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,18 +43,14 @@ Global
 		{18B124D5-928C-4CEA-8964-5D89A5E2F160}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18B124D5-928C-4CEA-8964-5D89A5E2F160}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18B124D5-928C-4CEA-8964-5D89A5E2F160}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DC7B59FE-84CD-465A-B1C0-0E1A2EE6DB75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC7B59FE-84CD-465A-B1C0-0E1A2EE6DB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC7B59FE-84CD-465A-B1C0-0E1A2EE6DB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC7B59FE-84CD-465A-B1C0-0E1A2EE6DB75}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35492A9D-D30C-42FE-A2B3-7E14CA0FEBEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35492A9D-D30C-42FE-A2B3-7E14CA0FEBEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35492A9D-D30C-42FE-A2B3-7E14CA0FEBEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35492A9D-D30C-42FE-A2B3-7E14CA0FEBEE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{15651E99-E6B2-4D46-A312-B711E13B91FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{15651E99-E6B2-4D46-A312-B711E13B91FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15651E99-E6B2-4D46-A312-B711E13B91FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15651E99-E6B2-4D46-A312-B711E13B91FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{279429A2-9E06-4869-9C0B-699E92F78821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{279429A2-9E06-4869-9C0B-699E92F78821}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{279429A2-9E06-4869-9C0B-699E92F78821}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{279429A2-9E06-4869-9C0B-699E92F78821}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
