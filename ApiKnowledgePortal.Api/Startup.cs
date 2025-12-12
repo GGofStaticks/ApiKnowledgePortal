@@ -41,6 +41,16 @@ namespace ApiKnowledgePortal.Api
             services.AddHangfire(config =>
                 config.UsePostgreSqlStorage(Configuration.GetConnectionString("DefaultConnection")));
             services.AddHangfireServer();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowLocalhost", policy =>
+                {
+                    policy.WithOrigins("https://localhost:7236")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app)
@@ -53,7 +63,11 @@ namespace ApiKnowledgePortal.Api
             }
 
             app.UseRouting();
+
             app.UseAuthorization();
+
+            app.UseCors("AllowLocalhost");
+
             app.UseEndpoints(endpoints => endpoints.MapControllers());
 
             app.UseHangfireDashboard();

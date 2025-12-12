@@ -3,6 +3,7 @@ using System;
 using ApiKnowledgePortal.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiKnowledgePortal.Infrastructure.Migrations
 {
     [DbContext(typeof(ApiKnowledgePortalDbContext))]
-    partial class ApiKnowledgePortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251211234054_5try")]
+    partial class _5try
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,6 +43,7 @@ namespace ApiKnowledgePortal.Infrastructure.Migrations
                         .HasColumnType("character varying(200)");
 
                     b.Property<Guid?>("SwaggerSourceId")
+                        .IsRequired()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Version")

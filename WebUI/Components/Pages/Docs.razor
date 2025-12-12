@@ -1,0 +1,78 @@
+﻿@page "/api-docs"
+@rendermode InteractiveServer
+@using ApiKnowledgePortal.Application.SwaggerSources.Dtos
+@using WebUI.Services
+@inject ApiClient ApiClient
+@inject NavigationManager Navigation
+<PageTitle>API Документация</PageTitle>
+
+<h1 class="mb-4">API Документация</h1>
+
+<div class="row mb-4 g-3">
+    <div class="col-md-6">
+        <label class="form-label fw-bold">Выберите Swagger Source из базы:</label>
+        <select class="form-select" @bind="selectedUrl">
+            <option value="">-- Выберите источник --</option>
+            @if (sources?.Any() == true)
+            {
+                foreach (var source in sources)
+                {
+                    <option value="@source.Url">@source.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label fw-bold">Или введите URL вручную:</label>
+        <input class="form-control" @bind="manualUrl" placeholder="https://example.com/swagger.json" />
+    </div>
+</div>
+
+<div class="mb-4">
+    <button class="btn btn-primary btn-lg" @onclick="LoadDocumentation" disabled="@string.IsNullOrWhiteSpace(CurrentUrl)">
+        Загрузить документацию
+    </button>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(CurrentUrlFromQuery))
+{
+    <redoc spec-url="@CurrentUrlFromQuery"
+           lazy-rendering
+           hide-loading
+           style="min-height: 90vh; border: 1px solid #444; border-radius: 8px; overflow: hidden;">
+    </redoc>
+}
+
+<!-- актуальный сдн редока -->
+<script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+
+@code {
+    private List<SwaggerSourceDto>? sources;
+    private string selectedUrl = "";
+    private string manualUrl = "";
+    private string CurrentUrl => !string.IsNullOrWhiteSpace(manualUrl) ? manualUrl : selectedUrl;
+
+    [SupplyParameterFromQuery(Name = "spec")]
+    private string? CurrentUrlFromQuery { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var paged = await ApiClient.GetSwaggerSourcesPagedAsync(1, 200);
+        sources = paged?.Items?.Where(s => s.IsActive).ToList() ?? new();
+
+        // если при загрузке страницы уже есть ?spec=, автоматом подставляем поля
+        if (!string.IsNullOrWhiteSpace(CurrentUrlFromQuery))
+        {
+            manualUrl = CurrentUrlFromQuery; // или selectedUrl, если совпадает с базой
+        }
+    }
+
+    private void LoadDocumentation()
+    {
+        if (!string.IsNullOrWhiteSpace(CurrentUrl))
+        {
+            // перезагрузка страницы с параметром spec=URL
+            Navigation.NavigateTo($"/api-docs?spec={Uri.EscapeDataString(CurrentUrl)}", forceLoad: true);
+        }
+    }
+}

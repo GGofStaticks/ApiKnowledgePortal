@@ -1,0 +1,206 @@
+﻿@page "/apispecifications"
+@using ApiKnowledgePortal.Application.Common
+@using ApiKnowledgePortal.Application.ApiSpec.Dtos
+@using ApiKnowledgePortal.Application.ApiSpec.Commands
+@using WebUI.Services
+@inject ApiClient ApiClient
+
+<div class="blazor-root">
+    <h1>API Specifications</h1>
+
+    <div class="mb-3 d-flex align-items-center">
+        <label class="me-2">Items per page: </label>
+        <select @bind="pageSize" @bind:event="onchange" @bind:after="PageSizeChanged" class="form-select d-inline w-auto me-4">
+            @foreach (var size in pageSizeOptions)
+            {
+                <option value="@size">@size</option>
+            }
+        </select>
+        <label class="me-2">Page: </label>
+        <select @bind="page" @bind:event="onchange" @bind:after="PageChanged" class="form-select d-inline w-auto">
+            @for (int i = 1; i <= TotalPages; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </div>
+
+    <button class="btn btn-success mb-3" @onclick="ShowAddForm">Add New API Specification</button>
+
+    @if (showAddForm)
+    {
+        <div class="card mb-3 p-3">
+            <h5>Add New API Specification</h5>
+            <div class="mb-2"><label>SwaggerSourceId:</label><input class="form-control" @bind="newSwaggerSourceId" /></div>
+            <div class="mb-2"><label>Name:</label><input class="form-control" @bind="newName" /></div>
+            <div class="mb-2"><label>Version:</label><input class="form-control" @bind="newVersion" /></div>
+            <div class="mb-2"><label>Content (JSON):</label><textarea class="form-control" rows="10" @bind="newContent"></textarea></div>
+            <button class="btn btn-primary me-2" @onclick="AddSpec">Save</button>
+            <button class="btn btn-secondary" @onclick="HideAddForm">Cancel</button>
+        </div>
+    }
+
+    @if (pagedResult is null)
+    {
+        <p>Loading...</p>
+    }
+    else if (!pagedResult.Items.Any())
+    {
+        <p>No API specifications found.</p>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>SwaggerSourceId</th>
+                    <th>Name</th>
+                    <th>Version</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var spec in pagedResult.Items)
+                {
+                    <tr>
+                        <td>@spec.Id</td>
+                        <td>@spec.SwaggerSourceId</td>
+                        <td>@spec.Name</td>
+                        <td>@spec.Version</td>
+                        <td>@spec.CreatedAt.ToLocalTime()</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm me-1" @onclick="() => StartEdit(spec.Id, spec.Content)">Edit</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => ShowDeleteConfirm(spec.Id)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center mt-2">
+            <button class="btn btn-primary" @onclick="PrevPage" disabled="@IsFirstPage">Previous</button>
+            <span>Page @pagedResult.Page of @TotalPages</span>
+            <button class="btn btn-primary" @onclick="NextPage" disabled="@IsLastPage">Next</button>
+        </div>
+    }
+
+    @if (editingSpecId != null)
+    {
+        <div class="modal-backdrop-custom" @onclick="CancelEdit">
+            <div class="modal-container" @onclick:stopPropagation>
+                <div class="card p-3" style="min-width: 500px;">
+                    <h5>Edit API Specification</h5>
+                    <div class="mb-2"><label>Content (JSON):</label><textarea class="form-control" rows="15" @bind="editContent"></textarea></div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary me-2" @onclick="() => SaveEdit(editingSpecId.Value)">Save</button>
+                        <button class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (showDeleteConfirm)
+    {
+        <div class="modal-backdrop-custom">
+            <div class="modal-container">
+                <div class="card p-3" style="min-width: 300px;">
+                    <h5>Confirm Delete</h5>
+                    <p>Are you sure you want to delete this specification?</p>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-danger me-2" @onclick="ConfirmDelete">Yes</button>
+                        <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .modal-backdrop-custom {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1050;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+</style>
+
+@code {
+    private PagedResult<ApiSpecDto>? pagedResult;
+    private int page = 1; private int pageSize = 10;
+    private bool showAddForm = false;
+    private readonly int[] pageSizeOptions = new[] { 5, 10, 25, 50 };
+    private int TotalPages => (int)Math.Ceiling((pagedResult?.TotalCount ?? 0) / (double)pageSize);
+    private bool IsFirstPage => page <= 1; private bool IsLastPage => page >= TotalPages;
+
+    private Guid newSwaggerSourceId;
+    private string newName = "";
+    private string newVersion = "";
+    private string newContent = "";
+
+    private Guid? editingSpecId;
+    private string editContent = "";
+    private bool showDeleteConfirm = false;
+    private Guid deleteTargetId;
+
+    protected override async Task OnInitializedAsync() => await LoadPageAsync();
+
+    private async Task LoadPageAsync() =>
+        pagedResult = await ApiClient.GetApiSpecificationsPagedAsync(page, pageSize);
+
+    private async Task PrevPage() { if (!IsFirstPage) { page--; await LoadPageAsync(); } }
+    private async Task NextPage() { if (!IsLastPage) { page++; await LoadPageAsync(); } }
+    private async Task PageSizeChanged() { page = 1; await LoadPageAsync(); }
+    private async Task PageChanged() => await LoadPageAsync();
+
+    private void ShowAddForm()
+    {
+        showAddForm = true;
+        newSwaggerSourceId = Guid.Empty;
+        newName = ""; newVersion = ""; newContent = "";
+    }
+    private void HideAddForm() => showAddForm = false;
+
+    private async Task AddSpec()
+    {
+        var command = new CreateApiSpecCommand(newSwaggerSourceId, newName, newVersion, newContent);
+        await ApiClient.CreateApiSpecificationAsync(command);
+        showAddForm = false;
+        await LoadPageAsync();
+    }
+
+    private void StartEdit(Guid id, string content) { editingSpecId = id; editContent = content; }
+    private void CancelEdit() { editingSpecId = null; editContent = ""; }
+
+    private async Task SaveEdit(Guid id)
+    {
+        await ApiClient.UpdateApiSpecificationAsync(new UpdateApiSpecCommand(id, editContent));
+        editingSpecId = null;
+        await LoadPageAsync();
+    }
+
+    private void ShowDeleteConfirm(Guid id) { deleteTargetId = id; showDeleteConfirm = true; }
+    private async Task ConfirmDelete()
+    {
+        await ApiClient.DeleteApiSpecificationAsync(deleteTargetId);
+        showDeleteConfirm = false;
+        await LoadPageAsync();
+    }
+    private void CancelDelete() => showDeleteConfirm = false;
+}

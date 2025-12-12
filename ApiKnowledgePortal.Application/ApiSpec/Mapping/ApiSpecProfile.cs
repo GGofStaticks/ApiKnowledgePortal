@@ -15,6 +15,7 @@ namespace ApiKnowledgePortal.Application.ApiSpec.Mapping
         {
             CreateMap<ApiSpecifications, ApiSpecDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.Value))
+                .ForMember(dest => dest.SwaggerSourceId, opt => opt.MapFrom(src => src.SwaggerSourceId))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Version, opt => opt.MapFrom(src => src.Version))
                 .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Content))

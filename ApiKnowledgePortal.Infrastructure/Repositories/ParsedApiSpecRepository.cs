@@ -13,7 +13,6 @@ namespace ApiKnowledgePortal.Infrastructure.Repositories
     public class ParsedApiSpecRepository : IParsedApiSpecRepository
     {
         private readonly ApiKnowledgePortalDbContext _dbContext;
-
         public ParsedApiSpecRepository(ApiKnowledgePortalDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -52,5 +51,6 @@ namespace ApiKnowledgePortal.Infrastructure.Repositories
         {
             return await _dbContext.ParsedApiSpecs.ToListAsync(cancellationToken);
         }
+        public IQueryable<ParsedApiSpec> Query() => _dbContext.ParsedApiSpecs.AsQueryable();
     }
 }
