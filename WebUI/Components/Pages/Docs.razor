@@ -4,6 +4,7 @@
 @using WebUI.Services
 @inject ApiClient ApiClient
 @inject NavigationManager Navigation
+
 <PageTitle>API Документация</PageTitle>
 
 <h1 class="mb-4">API Документация</h1>
@@ -11,7 +12,9 @@
 <div class="row mb-4 g-3">
     <div class="col-md-6">
         <label class="form-label fw-bold">Выберите Swagger Source из базы:</label>
-        <select class="form-select" @bind="selectedUrl">
+        <select class="form-select"
+                @bind="selectedUrl"
+                @bind:after="OnSourceSelected">
             <option value="">-- Выберите источник --</option>
             @if (sources?.Any() == true)
             {
@@ -43,7 +46,7 @@
     </redoc>
 }
 
-<!-- актуальный сдн редока -->
+<!-- актуальный CDN редока -->
 <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
 
 @code {
@@ -55,23 +58,37 @@
     [SupplyParameterFromQuery(Name = "spec")]
     private string? CurrentUrlFromQuery { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var paged = await ApiClient.GetSwaggerSourcesPagedAsync(1, 200);
-        sources = paged?.Items?.Where(s => s.IsActive).ToList() ?? new();
-
-        // если при загрузке страницы уже есть ?spec=, автоматом подставляем поля
-        if (!string.IsNullOrWhiteSpace(CurrentUrlFromQuery))
+        if (firstRender)
         {
-            manualUrl = CurrentUrlFromQuery; // или selectedUrl, если совпадает с базой
+            var paged = await ApiClient.GetSwaggerSourcesPagedAsync(1, 200);
+            sources = paged?.Items?.Where(s => s.IsActive).ToList() ?? new();
+
+            if (!string.IsNullOrWhiteSpace(CurrentUrlFromQuery))
+            {
+                manualUrl = CurrentUrlFromQuery;
+                var matchingSource = sources?.FirstOrDefault(s => s.Url == CurrentUrlFromQuery);
+                if (matchingSource != null)
+                {
+                    selectedUrl = matchingSource.Url;
+                }
+            }
+
+            StateHasChanged();
         }
+    }
+
+    private void OnSourceSelected()
+    {
+        manualUrl = "";
+        StateHasChanged();
     }
 
     private void LoadDocumentation()
     {
         if (!string.IsNullOrWhiteSpace(CurrentUrl))
         {
-            // перезагрузка страницы с параметром spec=URL
             Navigation.NavigateTo($"/api-docs?spec={Uri.EscapeDataString(CurrentUrl)}", forceLoad: true);
         }
     }

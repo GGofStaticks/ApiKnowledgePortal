@@ -4,12 +4,14 @@ using ApiKnowledgePortal.Application.SwaggerSources.Dtos;
 using ApiKnowledgePortal.Application.SwaggerSources.Queries;
 using ApiKnowledgePortal.SyncWorker.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiKnowledgePortal.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class SwaggerSourcesController : ControllerBase
     {
         private readonly IMediator _mediator;

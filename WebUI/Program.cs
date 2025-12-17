@@ -1,5 +1,8 @@
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using WebUI.Components;
 using WebUI.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,9 @@ builder.Services.AddHttpClient<ApiClient>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7059"); // урл апи
 });
+
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddAuthorizationCore();
 
 var app = builder.Build();
 
