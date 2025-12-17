@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ApiKnowledgePortal.Domain.ApiSpecifications;
 using ApiKnowledgePortal.Domain.ParsedApiSpecs;
 using ApiKnowledgePortal.Domain.SwaggerSources;
+using ApiKnowledgePortal.Domain.Users;
 using ApiKnowledgePortal.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,9 @@ namespace ApiKnowledgePortal.Infrastructure.Persistence
 
         // дбсет для сущности аписпек
         public DbSet<ApiSpecifications> ApiSpecs { get; set; }
+
+        // дбсет для сущности юзеров
+        public DbSet<User> Users { get; set; }
 
         // дбсет для источников свагера
         public DbSet<SwaggerSource> SwaggerSources { get; set; } = default!;
@@ -73,6 +77,18 @@ namespace ApiKnowledgePortal.Infrastructure.Persistence
                 entity.Property(e => e.OperationId).IsRequired();
                 entity.Property(e => e.Summary).IsRequired();
                 entity.Property(e => e.CreatedAt).IsRequired();
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.LastName).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(200);
+                entity.HasIndex(e => e.Email).IsUnique();
+                entity.Property(e => e.PasswordHash).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.Role).IsRequired();
+                entity.Property(e => e.Sources).HasColumnType("jsonb").IsRequired();
             });
 
             base.OnModelCreating(modelBuilder);

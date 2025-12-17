@@ -3,12 +3,14 @@ using ApiKnowledgePortal.Application.SwaggerParser.Commands;
 using ApiKnowledgePortal.Application.SwaggerParser.Dtos;
 using ApiKnowledgePortal.Application.SwaggerParser.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiKnowledgePortal.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ParsedApiSpecsController : ControllerBase
     {
         private readonly IMediator _mediator;

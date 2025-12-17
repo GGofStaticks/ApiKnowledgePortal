@@ -11,6 +11,7 @@ using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 
 namespace ApiKnowledgePortal.Infrastructure
 {
@@ -19,8 +20,12 @@ namespace ApiKnowledgePortal.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             // контекс бд для потсгреса
+            var dataSourceBuilder = new NpgsqlDataSourceBuilder(configuration.GetConnectionString("DefaultConnection"));
+            dataSourceBuilder.EnableDynamicJson();
+            var dataSource = dataSourceBuilder.Build();
+
             services.AddDbContext<ApiKnowledgePortalDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(dataSource));
 
             // юнитофворк
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -29,6 +34,7 @@ namespace ApiKnowledgePortal.Infrastructure
             services.AddScoped<IApiSpecRepository, ApiSpecRepository>();
             services.AddScoped<ISwaggerSourceRepository, SwaggerSourceRepository>();
             services.AddScoped<IParsedApiSpecRepository, ParsedApiSpecRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             // хенгфаер
             services.AddHangfire(config => config

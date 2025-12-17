@@ -3,12 +3,14 @@ using ApiKnowledgePortal.Application.ApiSpec.Dtos;
 using ApiKnowledgePortal.Application.ApiSpec.Queries;
 using ApiKnowledgePortal.Application.Common;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiKnowledgePortal.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ApiSpecificationsController : ControllerBase
     {
         private readonly IMediator _mediator;

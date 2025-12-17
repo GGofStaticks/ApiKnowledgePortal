@@ -1,0 +1,80 @@
+﻿@page "/login"
+@using ApiKnowledgePortal.Application.Users.Commands
+@using Blazored.LocalStorage
+@using WebUI.Services
+@inject ApiClient ApiClient
+@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
+
+<PageTitle>Вход</PageTitle>
+
+<div class="container mt-5">
+    <div class="card p-4" style="max-width: 400px; margin: 0 auto;">
+        <h2 class="text-center mb-4">Вход</h2>
+
+        <div class="mb-3">
+            <label class="form-label">Почта</label>
+            <input type="email" class="form-control" @bind="email" @bind:event="oninput" placeholder="example@mail.com" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Пароль</label>
+            <input type="password" class="form-control" @bind="password" @bind:event="oninput" />
+        </div>
+
+        <button class="btn btn-primary w-100" @onclick="HandleLogin" disabled="@isLoading">
+            @(isLoading ? "Вход..." : "Войти")
+        </button>
+
+        <p class="text-center mt-3">
+            Нет аккаунта? <a href="/register">Зарегистрироваться</a>
+        </p>
+
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger mt-3">@errorMessage</div>
+        }
+    </div>
+</div>
+
+@code {
+    private string email = "";
+    private string password = "";
+    private string errorMessage = "";
+    private bool isLoading = false;
+
+    private async Task HandleLogin()
+    {
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            errorMessage = "Заполните почту и пароль";
+            return;
+        }
+
+        isLoading = true;
+        errorMessage = "";
+        StateHasChanged();
+
+        try
+        {
+            var command = new LoginUserCommand(email, password);
+            var token = await ApiClient.LoginAsync(command);
+
+            await LocalStorage.SetItemAsync("authToken", token);
+
+            /* CHANGED START */
+            Navigation.NavigateTo("/", forceLoad: true);
+            /* CHANGED END */
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message.Contains("Неверная")
+                ? "Неверная почта или пароль"
+                : "Ошибка входа: " + ex.Message;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
